@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stride_forward/constants/app_theme.dart';
 import 'package:stride_forward/screens/history_screen.dart';
 import 'package:stride_forward/screens/home_screen.dart';
 
@@ -16,8 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Stride Forward',
       theme: ThemeData(
-        
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: .fromSeed(seedColor: AppColors.primary),
       ),
       home: const HistorySceen(),
     );
