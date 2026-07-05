@@ -61,6 +61,49 @@ class HistorySceen extends StatelessWidget {
                     ),
                   ],
                 ),
+                // recent activity row
+                Row(
+                  mainAxisAlignment: .spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Recent Activity',
+                      style: AppTypgraphy.bodyMedium.copyWith(
+                        fontSize: 21,
+                        fontWeight: .w600,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        log('Show all button clicked!');
+                      },
+                      child: Text(
+                        'Show All',
+                        style: AppTypgraphy.bodyMedium.copyWith(
+                          color: AppColors.secondary,
+                          fontWeight: .w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  spacing: 10,
+                  children: [
+                    _buildWalkContainer(
+                      walks: Walks.morningWalk,
+                      context: context,
+                    ),
+                    _buildWalkContainer(
+                      walks: Walks.afternoonWalk,
+                      context: context,
+                    ),
+                    _buildWalkContainer(
+                      walks: Walks.eveningWalk,
+                      context: context,
+                    ),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
               ],
             ),
           ),
@@ -68,6 +111,75 @@ class HistorySceen extends StatelessWidget {
       ),
     );
   }
+}
+
+enum Walks {
+  morningWalk(
+    'Morning Walk',
+    Icon(Icons.directions_walk_rounded, color: Colors.blue),
+    Color.fromARGB(255, 149, 190, 224),
+  ),
+  afternoonWalk(
+    'Afternoon Walk',
+    Icon(Icons.directions_run_rounded, color: Colors.pink),
+    Color.fromARGB(255, 239, 122, 161),
+  ),
+  eveningWalk(
+    'Evening Walk',
+    Icon(Icons.self_improvement_rounded, color: Colors.orange),
+    Color.fromARGB(255, 255, 211, 144),
+  );
+
+  final String walk;
+  final Icon icon;
+  final Color color;
+
+  const Walks(this.walk, this.icon, this.color);
+}
+
+Widget _buildWalkContainer({
+  required Walks walks,
+  required BuildContext context,
+}) {
+  return Container(
+    height: MediaQuery.sizeOf(context).height * 0.14,
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.grey[200]!),
+      color: AppColors.background,
+      borderRadius: .circular(12),
+    ),
+    child: Row(
+      mainAxisAlignment: .start,
+      spacing: 20,
+      children: [
+        SizedBox(width: MediaQuery.sizeOf(context).width * 0.01),
+        Container(
+          height: MediaQuery.sizeOf(context).height * 0.08,
+          width: MediaQuery.sizeOf(context).height * 0.08,
+          decoration: BoxDecoration(
+            color: walks.color.withOpacity(0.5),
+            borderRadius: .circular(12),
+          ),
+          child: Center(child: walks.icon),
+        ),
+        Column(
+          spacing: 5,
+          crossAxisAlignment: .start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              walks.walk,
+              style: AppTypgraphy.bodyMedium.copyWith(fontWeight: .w600),
+            ),
+            Text(
+              '2.5 km , 30 min',
+              style: AppTypgraphy.bodyMedium.copyWith(color: Colors.grey),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }
 
 Container _buildContainer({
