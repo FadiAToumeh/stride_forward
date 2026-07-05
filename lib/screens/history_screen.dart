@@ -86,6 +86,7 @@ class HistorySceen extends StatelessWidget {
                     ),
                   ],
                 ),
+                // activity column
                 Column(
                   spacing: 10,
                   children: [

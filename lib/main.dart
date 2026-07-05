@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: AppColors.primary),
       ),
-      home: const HistorySceen(),
+      home: const HomeScreen(),
     );
   }
 }

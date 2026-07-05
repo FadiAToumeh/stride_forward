@@ -2,12 +2,14 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:stride_forward/constants/app_theme.dart';
 import 'package:intl/intl.dart';
+import 'package:stride_forward/services/steps_service.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    StepsService stepsService = StepsService();
     final String name = 'Fadi';
     final int currentNumOfSteps = 8220;
     final int goal = 12000;
@@ -55,9 +57,7 @@ class HomeScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: .circular(12.5),
                       color: AppColors.surface,
-                      border: Border.all(
-                        color: Colors.grey[200]!,
-                      )
+                      border: Border.all(color: Colors.grey[200]!),
                     ),
                     height: 200,
                     width: double.infinity,
@@ -77,7 +77,7 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.primary,
                       ),
                       name: 'Calories',
-                      number: '427',
+                      number: stepsService.calculateCalories(currentNumOfSteps).toString(),
                       unit: 'kcal',
                     ),
                     _buildContainer(
@@ -88,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.secondary,
                       ),
                       name: 'Distance',
-                      number: '5.8',
+                      number:stepsService.calculateDistance(currentNumOfSteps).toString(),
                       unit: 'km',
                     ),
                   ],
@@ -142,10 +142,7 @@ class HomeScreen extends StatelessWidget {
       height: MediaQuery.sizeOf(context).height * 0.2,
       width: MediaQuery.sizeOf(context).height * 0.195,
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey[200]!,
-
-        ),
+        border: Border.all(color: Colors.grey[200]!),
         color: AppColors.surface,
         borderRadius: .circular(12),
       ),
@@ -189,7 +186,7 @@ class WeeklyChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20,),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: BarChart(
         BarChartData(
           titlesData: FlTitlesData(
@@ -214,7 +211,12 @@ class WeeklyChart extends StatelessWidget {
                   if (index >= 0 && index < labels.length) {
                     return SideTitleWidget(
                       meta: meta,
-                      child: Text(labels[index], style: AppTypgraphy.labelSmall.copyWith(color: Colors.grey),),
+                      child: Text(
+                        labels[index],
+                        style: AppTypgraphy.labelSmall.copyWith(
+                          color: Colors.grey,
+                        ),
+                      ),
                     );
                   }
                   return const SizedBox();
