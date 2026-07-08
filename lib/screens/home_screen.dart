@@ -1,18 +1,22 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:stride_forward/constants/app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:stride_forward/constants/app_theme.dart';
+import 'package:stride_forward/providers/steps_provider.dart';
+import 'package:stride_forward/providers/steps_notifier.dart';
 import 'package:stride_forward/services/steps_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    StepsService stepsService = StepsService();
-    final String name = 'Fadi';
-    final int currentNumOfSteps = 8220;
-    final int goal = 12000;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final int currentSteps = ref.watch(stepsNotifierProvider);
+    final StepsService stepsService = ref.read(stepsServiceProvider);
+
+    const String name = 'Fadi';
+    const int goal = 12000;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -25,16 +29,13 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: .start,
               children: [
                 SizedBox(height: MediaQuery.sizeOf(context).height * 0.025),
-                Text('Keep it up, $name !', style: AppTypgraphy.headlineSmall),
+                Text('Keep it up, $name!', style: AppTypgraphy.headlineSmall),
                 Text(
                   dateTimeString(),
                   style: AppTypgraphy.bodyMedium.copyWith(color: Colors.grey),
                 ),
                 SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
-                ProgressWidget(
-                  goalNumber: goal,
-                  numberOfSteps: currentNumOfSteps,
-                ),
+                ProgressWidget(goalNumber: goal, numberOfSteps: currentSteps),
                 SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
                 Row(
                   mainAxisAlignment: .spaceBetween,
@@ -77,7 +78,9 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.primary,
                       ),
                       name: 'Calories',
-                      number: stepsService.calculateCalories(currentNumOfSteps).toString(),
+                      number: stepsService
+                          .calculateCalories(currentSteps)
+                          .toString(),
                       unit: 'kcal',
                     ),
                     _buildContainer(
@@ -88,7 +91,9 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.secondary,
                       ),
                       name: 'Distance',
-                      number:stepsService.calculateDistance(currentNumOfSteps).toString(),
+                      number: stepsService
+                          .calculateDistance(currentSteps)
+                          .toString(),
                       unit: 'km',
                     ),
                   ],
