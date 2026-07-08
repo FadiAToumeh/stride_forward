@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:pedometer/pedometer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +36,7 @@ class StepsService {
   }
 
   void _onStepCountError(dynamic error) {
-    print('Pedometer error: $error');
+    throw Exception('Pedometer error: $error');
   }
 
   

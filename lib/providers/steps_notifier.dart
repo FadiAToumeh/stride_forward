@@ -7,22 +7,19 @@ class StepsNotifier extends StateNotifier<int> {
   void updateSteps(int steps) {
     state = steps;
   }
-}
 
-final stepsNotifierProvider = StateNotifierProvider<StepsNotifier, int>((ref) {
-  final stepsService = ref.watch(stepsServiceProvider);
+  final stepNotifierProvider = StateNotifierProvider<StepsNotifier, int>((ref) {
+    final stepService = ref.watch(stepsServiceProvider);
+    final notifier = StepsNotifier();
 
-  final notifier = StepsNotifier();
-
-  stepsService.onStepsUpdated = (steps) {
-    notifier.updateSteps(steps);
-  };
-
-  stepsService.getTodaySteps().then((savedSteps) {
-    if (savedSteps > 0) {
-      notifier.updateSteps(savedSteps);
-    }
+    stepService.onStepsUpdated = (steps) {
+      notifier.updateSteps(steps);
+    };
+    stepService.getTodaySteps().then((savedSteps) {
+      if (savedSteps > 0) {
+        notifier.updateSteps(savedSteps);
+      }
+    });
+    return notifier;
   });
-
-  return notifier;
-});
+}
